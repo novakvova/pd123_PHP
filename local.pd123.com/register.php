@@ -1,3 +1,34 @@
+<?php
+$name = "";
+$email= "";
+$password= "";
+if($_SERVER["REQUEST_METHOD"]=="POST") {
+    //echo "<br/><br/><br/>";
+    if(isset($_POST["name"]))
+        $name=$_POST["name"]; //Супер глобальний масив, який зберігає значенян полів форми
+    if(isset($_POST["email"]))
+        $email=$_POST["email"]; //Супер глобальний масив, який зберігає значенян полів форми
+    if(isset($_POST["password"]))
+        $password=$_POST["password"]; //Супер глобальний масив, який зберігає значенян полів форми
+    if(!empty($name)&&!empty($email)&&!empty($password)) {
+        try {
+            //підклюичти до Бази даних
+            $dbh = new PDO('mysql:host=localhost;dbname=pd123', "root", "123456");
+            //Cтворює запит до БД
+            $sql = "INSERT INTO users (name, email, password) VALUES(?, ?, ?);";
+            $stmt= $dbh->prepare($sql); //сворити параметризований запит
+            $stmt->execute([$name, $email, $password]);
+            $dbh = null;
+            header('Location: /'); //Перехід на головну сторінку
+            exit;
+        } catch (PDOException $e) {
+            print "Error!: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
+    //echo "<h3>$name</h3>";
+}
+?>
 <?php include $_SERVER["DOCUMENT_ROOT"] . "/head.php"; ?>
 
 <main>
@@ -9,7 +40,7 @@
                     <form method="POST" class="needs-validation" novalidate="" autocomplete="off">
                         <div class="mb-3">
                             <label class="mb-2 text-muted" for="name">Ім'я</label>
-                            <input id="name" type="text" class="form-control" name="name" value="" required=""
+                            <input id="name" type="text" class="form-control" name="name" value="<?php echo $name; ?>" required=""
                                    autofocus="">
                             <div class="invalid-feedback">
                                 Вкажіть ім'я
@@ -18,7 +49,7 @@
 
                         <div class="mb-3">
                             <label class="mb-2 text-muted" for="email">Електронна адреса</label>
-                            <input id="email" type="email" class="form-control" name="email" value="" required="">
+                            <input id="email" type="email" class="form-control" name="email" value="<?php echo $email; ?>" required="">
                             <div class="invalid-feedback">
                                 Вкажіть пошту
                             </div>

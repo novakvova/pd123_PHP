@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import http from "../../../http";
 import {ICategoryItem} from "./types";
 import {Link} from "react-router-dom";
+import ModalDelete from "../../common/ModalDelete";
 
 const CategoryListPage = () => {
     const [categories, setCategories] =
@@ -13,6 +14,16 @@ const CategoryListPage = () => {
             setCategories(resp.data);
         });
     }, []);
+
+    const onDelete = async (id: number) => {
+        //console.log("Delete category", id);
+        try {
+            await http.delete(`api/category/${id}`);
+            setCategories(categories.filter(x=>x.id!==id));
+        } catch {
+
+        }
+    }
     return (
       <>
           <div className="container">
@@ -25,6 +36,7 @@ const CategoryListPage = () => {
                       <th scope="col">Назва</th>
                       <th scope="col">Фото</th>
                       <th scope="col">Опис</th>
+                      <th></th>
                   </tr>
                   </thead>
                   <tbody>
@@ -35,6 +47,9 @@ const CategoryListPage = () => {
                               <td>{category.name}</td>
                               <td>{category.image}</td>
                               <td>{category.description}</td>
+                              <td>
+                                  <ModalDelete id={category.id} text={category.name} deleteFunc={onDelete}/>
+                              </td>
                           </tr>
                       );
                   })}

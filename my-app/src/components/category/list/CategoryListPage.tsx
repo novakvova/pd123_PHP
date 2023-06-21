@@ -49,6 +49,8 @@ const CategoryListPage = () => {
                               <td>{category.description}</td>
                               <td>
                                   <ModalDelete id={category.id} text={category.name} deleteFunc={onDelete}/>
+                                  &nbsp; &nbsp;
+                                  <Link to={`/category/edit/${category.id}`} className="btn btn-info">Змінить</Link>
                               </td>
                           </tr>
                       );

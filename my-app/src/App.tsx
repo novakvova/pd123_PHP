@@ -10,7 +10,7 @@ const App = () => {
       <Routes>
         <Route path="/" >
           <Route index element={<CategoryListPage/>}/>
-          <Route path="/category/create" element={<CategoryCreatePage/>}/>
+          <Route path="category/create" element={<CategoryCreatePage/>}/>
         </Route>
       </Routes>
     </>

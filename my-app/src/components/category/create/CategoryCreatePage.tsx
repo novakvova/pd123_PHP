@@ -1,7 +1,7 @@
 import {ICategoryCreate} from "./types";
 import {useFormik} from "formik";
 import http from "../../../http";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 
 const CategoryCreatePage = () => {
@@ -31,6 +31,7 @@ const CategoryCreatePage = () => {
 
         <div className="container">
             <h1 className="text-center">Додати категорію</h1>
+
             <form className="col-md-6 offset-md-3" onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="name">Назва</label>

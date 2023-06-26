@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import http from "../../../http";
+import http from "../../../../http";
 import {ICategoryItem} from "./types";
 import {Link} from "react-router-dom";
-import ModalDelete from "../../common/ModalDelete";
+import ModalDelete from "../../../common/ModalDelete";
 
 const CategoryListPage = () => {
     const [categories, setCategories] =
@@ -28,7 +28,7 @@ const CategoryListPage = () => {
       <>
           <div className="container">
               <h1 className="text-center">Список категорій</h1>
-              <Link to="/category/create" className="btn btn-success">Додати</Link>
+              <Link to="create" className="btn btn-success">Додати</Link>
               <table className="table">
                   <thead>
                   <tr>

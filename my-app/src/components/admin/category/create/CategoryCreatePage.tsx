@@ -1,24 +1,20 @@
-import {ICategoryEdit} from "./types";
+import {ICategoryCreate} from "./types";
 import {useFormik} from "formik";
-import http from "../../../http";
-import {useNavigate, useParams} from "react-router-dom";
-import {useEffect} from "react";
-import {ICategoryItem} from "../list/types";
+import http from "../../../../http";
+import {Link, useNavigate} from "react-router-dom";
 
 
-const CategoryEditPage = () => {
+const CategoryCreatePage = () => {
     const navigate = useNavigate();
-    const {id} = useParams();
-    const init: ICategoryEdit = {
-        id: id ? Number(id) : 0,
+    const init: ICategoryCreate = {
         name: "",
         image: "",
         description: ""
     };
-    const onFormikSubmit = async (values: ICategoryEdit) => {
+    const onFormikSubmit = async (values: ICategoryCreate) => {
         console.log("Send data server", values);
         try{
-            const result = await http.post(`api/category/edit/${id}`, values);
+            const result = await http.post("api/category", values);
             navigate("/");
         }
         catch {
@@ -30,23 +26,11 @@ const CategoryEditPage = () => {
         onSubmit: onFormikSubmit
     });
 
-    const {values, handleChange, handleSubmit, setFieldValue} = formik;
-
-    useEffect(() => {
-        http.get<ICategoryItem>(`api/category/${id}`)
-            .then(resp => {
-               const {data} = resp;
-                setFieldValue("name", data.name);
-                setFieldValue("image", data.image);
-                setFieldValue("description", data.description);
-            });
-    },[id]);
-
-
+    const {values, handleChange, handleSubmit} = formik;
     return (
 
         <div className="container">
-            <h1 className="text-center">Зміна категорії</h1>
+            <h1 className="text-center">Додати категорію</h1>
 
             <form className="col-md-6 offset-md-3" onSubmit={handleSubmit}>
                 <div className="mb-3">
@@ -73,10 +57,10 @@ const CategoryEditPage = () => {
                            placeholder="Вкажіть опис"/>
                 </div>
 
-                <button type="submit" className="btn btn-primary">Зберегти</button>
+                <button type="submit" className="btn btn-primary">Додати</button>
             </form>
         </div>
     );
 }
 
-export default CategoryEditPage;
+export default CategoryCreatePage;

@@ -6,6 +6,7 @@ import AdminLayout from "./components/admin/container/AdminLayout";
 import CategoryListPage from "./components/admin/category/list/CategoryListPage";
 import CategoryCreatePage from "./components/admin/category/create/CategoryCreatePage";
 import CategoryEditPage from "./components/admin/category/edit/CategoryEditPage";
+import HomePage from "./components/home/HomePage";
 
 const App = () => {
 
@@ -13,8 +14,7 @@ const App = () => {
         <>
             <Routes>
                 <Route path="/">
-
-
+                    <Route index element={<HomePage/>}/>
                 </Route>
 
                 <Route path={"/admin"} element={<AdminLayout/>}>

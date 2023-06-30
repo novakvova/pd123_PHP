@@ -3,6 +3,7 @@ import http from "../../../../http";
 import {ICategoryItem} from "./types";
 import {Link} from "react-router-dom";
 import ModalDelete from "../../../common/ModalDelete";
+import {APP_ENV} from "../../../../env";
 
 const CategoryListPage = () => {
     const [categories, setCategories] =
@@ -45,7 +46,9 @@ const CategoryListPage = () => {
                           <tr key={category.id}>
                               <th scope="row">{category.id}</th>
                               <td>{category.name}</td>
-                              <td>{category.image}</td>
+                              <td>
+                                  <img src={`${APP_ENV.BASE_URL}uploads/50_${category.image}`} alt="Козак" width={50}/>
+                              </td>
                               <td>{category.description}</td>
                               <td>
                                   <ModalDelete id={category.id} text={category.name} deleteFunc={onDelete}/>

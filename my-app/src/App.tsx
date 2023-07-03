@@ -7,14 +7,18 @@ import CategoryListPage from "./components/admin/category/list/CategoryListPage"
 import CategoryCreatePage from "./components/admin/category/create/CategoryCreatePage";
 import CategoryEditPage from "./components/admin/category/edit/CategoryEditPage";
 import HomePage from "./components/home/HomePage";
+import DefaultLayout from "./components/container/DefaultLayout";
+import LoginPage from "./components/auth/login/LoginPage";
 
 const App = () => {
 
     return (
         <>
             <Routes>
-                <Route path="/">
+                <Route path="/" element={<DefaultLayout/>}>
                     <Route index element={<HomePage/>}/>
+                    <Route path={"login"} element={<LoginPage/>}/>
+
                 </Route>
 
                 <Route path={"/admin"} element={<AdminLayout/>}>

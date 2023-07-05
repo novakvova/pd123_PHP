@@ -1,6 +1,6 @@
 import {ILoginPage, ILoginResult} from "./types";
 import {useState} from "react";
-import http_common from "../../../http";
+import http_common from "../../../http_common";
 import {useFormik} from "formik";
 
 const LoginPage = () => {

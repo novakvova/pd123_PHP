@@ -1,21 +1,27 @@
 import {ICategoryCreate} from "./types";
 import {useFormik} from "formik";
-import http from "../../../../http";
-import {Link, useNavigate} from "react-router-dom";
+import http_common from "../../../../http_common";
+import {useNavigate} from "react-router-dom";
+import defaultImage from '../../../../assets/default.jpg';
+import {ChangeEvent} from "react";
 
 
 const CategoryCreatePage = () => {
     const navigate = useNavigate();
     const init: ICategoryCreate = {
         name: "",
-        image: "",
+        image: null,
         description: ""
     };
     const onFormikSubmit = async (values: ICategoryCreate) => {
         console.log("Send data server", values);
         try{
-            const result = await http.post("api/category", values);
-            navigate("/");
+            const result = await http_common.post("api/category", values,{
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+            navigate("..");
         }
         catch {
             console.log("Server error request");
@@ -26,9 +32,24 @@ const CategoryCreatePage = () => {
         onSubmit: onFormikSubmit
     });
 
-    const {values, handleChange, handleSubmit} = formik;
-    return (
+    const {values, handleChange, handleSubmit, setFieldValue} = formik;
 
+    const onChangeFileHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if(files) {
+            const file = files[0];
+            if(file) {
+                const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+                if (!allowedTypes.includes(file.type)) {
+                    alert("Недостимий тип файлу!");
+                    return;
+                }
+                setFieldValue(e.target.name, file);
+            }
+        }
+    }
+
+    return (
         <div className="container">
             <h1 className="text-center">Додати категорію</h1>
 
@@ -42,10 +63,14 @@ const CategoryCreatePage = () => {
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="image">Фото</label>
-                    <input type="text" className="form-control" id="image" name="image"
-                           onChange={handleChange}
-                           value={values.image}
+                    <label htmlFor="image">
+                        <img src={values.image==null ? defaultImage : URL.createObjectURL(values.image)}
+                             alt="фото" width={150} style={{cursor:"pointer"}}/>
+                    </label>
+                    <input type="file" className="d-none"
+                           id="image"
+                           name="image"
+                           onChange={onChangeFileHandler}
                            placeholder="Вкажіть фото"/>
                 </div>
 

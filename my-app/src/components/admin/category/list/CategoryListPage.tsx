@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import http from "../../../../http";
+import http from "../../../../http_common";
 import {ICategoryItem} from "./types";
 import {Link} from "react-router-dom";
 import ModalDelete from "../../../common/ModalDelete";
@@ -53,7 +53,7 @@ const CategoryListPage = () => {
                               <td>
                                   <ModalDelete id={category.id} text={category.name} deleteFunc={onDelete}/>
                                   &nbsp; &nbsp;
-                                  <Link to={`/category/edit/${category.id}`} className="btn btn-info">Змінить</Link>
+                                  <Link to={`/admin/category/edit/${category.id}`} className="btn btn-info">Змінить</Link>
                               </td>
                           </tr>
                       );

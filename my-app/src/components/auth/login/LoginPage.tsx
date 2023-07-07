@@ -2,19 +2,38 @@ import {ILoginPage, ILoginResult} from "./types";
 import {useState} from "react";
 import http_common from "../../../http_common";
 import {useFormik} from "formik";
+import jwtDecode from "jwt-decode";
+import {AuthUserActionType, IUser} from "../types";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const LoginPage = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const init: ILoginPage = {
         email: "",
         password: ""
     };
+
     const [message, setMessage] = useState<string>("");
 
     const onSubmitFormik = async (values: ILoginPage) => {
         try {
             const result = await http_common.post<ILoginResult>("api/auth/login", values);
-            console.log("Login is good", result);
+            const {data} = result;
+            const token = data.access_token;
+            localStorage.token = token;
+            var user = jwtDecode(token) as IUser;
+            dispatch({
+               type: AuthUserActionType.LOGIN_USER,
+               payload: {
+                   email: user.email,
+                   name: user.name
+               }
+            });
+            navigate("/");
+            //console.log("Login is good", user);
         } catch {
             setMessage("Дані вказнао не вірно");
         }

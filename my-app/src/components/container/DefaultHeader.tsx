@@ -1,6 +1,18 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {AuthUserActionType, IAuthUser} from "../auth/types";
 
 const DefaultHeader = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {user, isAuth} = useSelector((store: any) => store.auth as IAuthUser);
+    const onLogoutHandler = (e: MouseEvent|any) => {
+        e.preventDefault();
+        //console.log("logout");
+        localStorage.removeItem("token");
+        dispatch({type: AuthUserActionType.LOGOUT_USER});
+        navigate("/");
+    }
     return (
       <>
           <header data-bs-theme="dark">
@@ -24,14 +36,25 @@ const DefaultHeader = () => {
                                   <a className="nav-link disabled">Disabled</a>
                               </li>
                           </ul>
-                          <ul className={"navbar-nav"}>
-                              <li className="nav-item">
-                                  <a className="nav-link" href="#">Реєстрація</a>
-                              </li>
-                              <li className="nav-item">
-                                  <Link className="nav-link" to="/login">Вхід</Link>
-                              </li>
-                          </ul>
+                          {isAuth ? (
+                              <ul className={"navbar-nav"}>
+                                  <li className="nav-item">
+                                      <Link className="nav-link" to="/profile">{user?.email}</Link>
+                                  </li>
+                                  <li className="nav-item">
+                                      <Link className="nav-link" to="/logout" onClick={onLogoutHandler} >Вихід</Link>
+                                  </li>
+                              </ul>
+                          ) : (
+                              <ul className={"navbar-nav"}>
+                                  <li className="nav-item">
+                                      <Link className="nav-link" to="/register">Реєстрація</Link>
+                                  </li>
+                                  <li className="nav-item">
+                                      <Link className="nav-link" to="/login">Вхід</Link>
+                                  </li>
+                              </ul>
+                          )}
                       </div>
                   </div>
               </nav>
